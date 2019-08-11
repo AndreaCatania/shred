@@ -195,14 +195,14 @@ impl<'a, 'b> DispatcherBuilder<'a, 'b> {
     /// This mean that the dependencies, the `System` names, etc.. specified on
     /// the `Batch` `Dispatcher` are not visible on the parent, and is not
     /// allowed to specify cross dependencies.
-    pub fn with_batch<T>(
+    pub fn with_batch<'x, 'y, T>(
         mut self,
-        dispatcher_builder: DispatcherBuilder<'a, 'b>,
+        dispatcher_builder: DispatcherBuilder<'x, 'y>,
         name: &str,
         dep: &[&str],
     ) -> Self
     where
-        T: for<'c> System<'c> + BatchController<'a, 'b> + Send + 'a,
+        T: for<'c> System<'c> + BatchController<'x, 'y> + Send + 'a,
     {
         self.add_batch::<T>(dispatcher_builder, name, dep);
 
@@ -227,13 +227,13 @@ impl<'a, 'b> DispatcherBuilder<'a, 'b> {
     /// This mean that the dependencies, the `System` names, etc.. specified on
     /// the `Batch` `Dispatcher` are not visible on the parent, and is not
     /// allowed to specify cross dependencies.
-    pub fn add_batch<T>(
+    pub fn add_batch<'x, 'y, T>(
         &mut self,
-        mut dispatcher_builder: DispatcherBuilder<'a, 'b>,
+        mut dispatcher_builder: DispatcherBuilder<'x, 'y>,
         name: &str,
         dep: &[&str],
     ) where
-        T: for<'c> System<'c> + BatchController<'a, 'b> + Send + 'a,
+        T: for<'c> System<'c> + BatchController<'x, 'y> + Send + 'a,
     {
         dispatcher_builder.thread_pool = self.thread_pool.clone();
 
