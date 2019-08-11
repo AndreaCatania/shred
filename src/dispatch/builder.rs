@@ -195,14 +195,14 @@ impl<'a, 'b> DispatcherBuilder<'a, 'b> {
     /// This mean that the dependencies, the `System` names, etc.. specified on
     /// the `Batch` `Dispatcher` are not visible on the parent, and is not
     /// allowed to specify cross dependencies.
-    pub fn with_batch<'x, 'y, T>(
+    pub fn with_batch<T>(
         mut self,
-        dispatcher_builder: DispatcherBuilder<'x, 'y>,
+        dispatcher_builder: DispatcherBuilder<'a, 'b>,
         name: &str,
         dep: &[&str],
     ) -> Self
     where
-        T: for<'c> System<'c> + BatchController<'x, 'y> + Send + 'a,
+        T: for<'c> System<'c> + BatchController<'a, 'b> + Send + 'a,
     {
         self.add_batch::<T>(dispatcher_builder, name, dep);
 
